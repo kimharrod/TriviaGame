@@ -1,0 +1,159 @@
+body  {
+
+	background-image: url(../images/WorldMap.jpg);
+	background-size: cover;
+	background-repeat: none;
+	height: 100%;
+	font-family: 'Hind', sans-serif;
+}
+
+
+.top-buffer { 
+
+	margin-top: 10px; 
+}
+
+.bottom-buffer { 
+
+	margin-bottom: 10px; 
+}
+
+.col-md-12, .col-med-6 {
+
+	box-sizing: border-box;
+
+	color: rgb(51, 51, 51);
+
+	display: block;
+	
+	font-size: 30px;
+
+	font-weight: 300;
+	
+	line-height: 60px;
+}
+
+
+#timer {
+
+	border-width: 5px;
+	border-style: dotted;
+	border-color: slategray1;
+	background-color: azure;
+}
+
+#timer p {
+
+	text-align: center;
+
+	box-sizing: border-box;
+
+	color: rgb(51, 51, 51);
+
+	display: block;
+	
+	font-size: 30px;
+	
+	line-height: 45px;
+}
+
+#askQuestion {
+
+	box-sizing: border-box;
+	
+	color: rgb(51, 51, 51);
+
+	display: block;
+
+	margin-left: 0.5%;
+	
+	font-size: 50px;
+
+	font-weight: 500;
+	
+	line-height: 60px;
+}
+
+#gameCounter p {
+
+	box-sizing: border-box;
+	
+	color: rgb(51, 51, 51);
+
+	display: block;
+	
+	font-size: 50px;
+
+	font-weight: 500;
+	
+	line-height: 60px;
+}
+
+#gameCounter {
+
+	box-sizing: border-box;
+	
+	color: rgb(51, 51, 51);
+
+	display: block;
+
+	margin-left: 0.5%;
+	
+	font-size: 50px;
+
+	font-weight: 500;
+	
+	line-height: 60px;
+}
+
+#gemImages {	
+
+	box-sizing: border-box;
+	
+	color: rgb(51, 51, 51);
+
+	display: block;
+
+	margin-left: 0.5%;
+	
+	font-size: 30px;
+
+	font-weight: 300;
+	
+	line-height: 60px;
+}
+
+#winlossMessage {	
+
+	box-sizing: border-box;
+	
+	color: rgb(51, 51, 51);
+
+	display: block;
+
+	margin-left: 1%;
+
+	font-size: 30px;
+
+	font-weight: 300;
+	
+	line-height: 60px;
+}
+
+#winlossCounter {	
+
+	box-sizing: border-box;
+	
+	color: rgb(51, 51, 51);
+
+	display: block;
+
+	margin-left: 1%;
+	
+	font-size: 30px;
+
+	font-weight: 300;
+	
+	line-height: 60px;
+}
+
