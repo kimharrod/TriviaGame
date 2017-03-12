@@ -54,17 +54,26 @@ $(document).ready(function(){
 	console.log(correctAnswer);
 	$("#" + "slot" + correctAnswerSlot).html(correctAnswer);
 
+	// Place the incorrect answers into the remaining answer slots
+
+	var incorrectAnswers = apiResults[questionIndex].incorrect_answers;
+	console.log(incorrectAnswers);
+
+	var n = 0;
+	for (var i = 1; i < 5; i++) {
+		if (i != correctAnswerSlot) {
+			$("#" + "slot" + i).html(incorrectAnswers[n]);
+			n++;
+		}
+
+	}
+
+
+
+
+
  	});	
      
    
-
-	
-
-
- 	
-
-	
-	
-
 
 });
