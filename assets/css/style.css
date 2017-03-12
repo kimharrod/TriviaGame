@@ -67,9 +67,7 @@ body  {
 
 	margin-left: 0.5%;
 	
-	font-size: 50px;
-
-	font-weight: 500;
+	font-size: 40px;
 	
 	line-height: 60px;
 }
@@ -123,6 +121,11 @@ body  {
 	line-height: 60px;
 }
 
+#slot1,
+#slot2,
+#slot3,
+#slot4,
+#slot5,
 #winlossMessage {	
 
 	box-sizing: border-box;

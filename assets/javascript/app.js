@@ -2,9 +2,9 @@ $(document).ready(function(){
 
 	var questionIndex = "";
 	var gameQuestions = [];
+	
 
-	// Function to display a trivia question once a player lands on the game page.
-	// Build the URL we need to query to database (get the info we want from the API).
+	// The URL we need to query to database (get the info we want from the API):
 
     var queryURL = "https://opentdb.com/api.php?amount=40&category=22&difficulty=easy&type=multiple";
 
@@ -25,14 +25,13 @@ $(document).ready(function(){
     var apiResults = response.results;
     console.log(apiResults[0].question);
 
- 
-	// Generate a random number between 0 and 49, which is used to select the trivia question
+ 	// Generate a random number between 0 and 49, which is used to select the trivia question
 
 
 	questionIndex = Math.floor((Math.random() * 49) +1);
-	console.log(questionIndex);
-	var currentQuestion = apiResults[questionIndex].question;
-	console.log(currentQuestion);
+ 	console.log(questionIndex);
+ 	var currentQuestion = apiResults[questionIndex].question;
+ 	console.log(currentQuestion);
 
 	// If the question index hasn't already been chosen, then push it into a array used to track which question have already been chosen
 			
@@ -45,12 +44,27 @@ $(document).ready(function(){
     // Display the game question and answers
     
  	$("#askQuestion").html(currentQuestion);
- 
+
+
+ 	// Select a div to display the correct answer, by generating a random number between 1 and 4
+
+
+	var correctAnswerSlot = Math.floor((Math.random() * 3) +1);
+	var correctAnswer = apiResults[questionIndex].correct_answer;
+	console.log(correctAnswer);
+	$("#" + "slot" + correctAnswerSlot).html(correctAnswer);
 
  	});	
      
-      
+   
 
+	
+
+
+ 	
+
+	
+	
 
 
 });
