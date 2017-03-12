@@ -13,6 +13,8 @@ $(document).ready(function(){
     var queryURL = "https://opentdb.com/api.php?amount=40&category=22&difficulty=easy&type=multiple";
 
 
+
+
 	// We then created an AJAX call
 	 $.ajax({
         url: queryURL,
@@ -103,13 +105,43 @@ $(document).ready(function(){
 			$("#winlossCounter").html("Correct: " + correctAnswers + "&nbsp;&nbsp;Incorrect: " + incorrectAnswers);
 
 		} else {
-
-			$("#winlossMessage").text("Sorry, the answer was : " + correctAnswer);
-			incorrectAnswers++;
-			$("#winlossCounter").html("Correct: " + correctAnswers + "&nbsp;&nbsp;Incorrect: " + incorrectAnswers);
+			youLost();
+			// $("#winlossMessage").text("Sorry, the answer was : " + correctAnswer);
+			// incorrectAnswers++;
+			// $("#winlossCounter").html("Correct: " + correctAnswers + "&nbsp;&nbsp;Incorrect: " + incorrectAnswers);
 			
 		}
 
 		} // end isCorrect function
+
+
+		function youLost () {
+			$("#winlossMessage").text("Sorry, the answer was : " + correctAnswer);
+			incorrectAnswers++;
+			$("#winlossCounter").html("Correct: " + correctAnswers + "&nbsp;&nbsp;Incorrect: " + incorrectAnswers);
+		}
+
+
+		//  Timer counts down 30 seconds per question
+
+		$(function() {  
+
+        $("#timeClock").countdown({
+          date: +(new Date) + 10000,
+          render: function(data) {
+            $(this.el).text(this.leadingZeros(data.sec, 2) + " sec");
+          },
+          onEnd: function() {
+          youLost();
+
+          }
+        }).on("click", function() {
+          $(this).removeClass('ended').data('countdown').update(+(new Date) + 30000).start();
+        });     
+      });
+
+
+
+
 
 });
