@@ -1,23 +1,29 @@
 $(document).ready(function(){
 
-	var questionIndex = "";
-	var gameQuestions = [];
-	var correctAnswerSlot = "";
-	var correctAnswers = 0;
+	// Set variables for the game
+
+	var apiResults = {};
+	var questionIndex = 0;
+	var questionIndices = [];
+	var correctAnswerSlot = 0;
+	var correctScore = 0;
+	var wrongScore = 0;
+	var totalScore = 0;
 	var correctAnswer = "";
-	var incorrectAnswers = 0;
+	var incorrectAnswers = [];
+	var currentQuestion = "";
 	
 
-	// The URL we need to query to database (get the info we want from the API):
+	// The URL to make the necessary API call
 
     var queryURL = "https://opentdb.com/api.php?amount=40&category=22&difficulty=easy&type=multiple";
 
 
-
-
-	// We then created an AJAX call
+	// Perform an AJAX call to gather the question data from the API
 	 $.ajax({
         url: queryURL,
+        async: false,
+        cache: false,
         method: "GET"
       }).done(function(response) {
 	 
@@ -26,103 +32,163 @@ $(document).ready(function(){
 	console.log(queryURL);
     console.log(response);
     
-    //Set a variable to represent the API array data
+    //Put the API results into an array
 
-    var apiResults = response.results;
-    console.log(apiResults[0].question);
+    apiResults = response.results;
+  
 
- 	// Generate a random number between 0 and 49, which is used to select the trivia question
+ 	});	//end AJAX call
+    
+    //Console the first question from the response data
 
+    console.log("First question: " + apiResults[0].question);
 
-	questionIndex = Math.floor((Math.random() * 49) +1);
- 	console.log(questionIndex);
- 	var currentQuestion = apiResults[questionIndex].question;
- 	console.log(currentQuestion);
+    
+    // Function to initialize variables and choose a new question
 
-	// If the question index hasn't already been chosen, then push it into a array used to track which question have already been chosen
-			
+	function initGame () {
 
-	if (gameQuestions.indexOf(questionIndex) === -1) {
-		gameQuestions.push(questionIndex);
-	}
+	// Check to see if 10 questions have been answered and the game is over
+	
+	totalScore = correctScore + wrongScore;
+	if (totalScore === 10) {
+		$("#timeClock").removeClass('ended').data('countdown').stop();
+		$("#winlossMessage").text("Thanks for playing!");
+
+	}	
+
+	questionIndex = 0;
+	correctAnswerSlot = "";
+	correctAnswer = "";
+	currentQuestion = "none";
+
+	// Initiates loop to determine if each new questions is unique to that 10-question game session. 	
+
+	
+	while (currentQuestion === "none") {
+		
+		// Generate a random number from the length of the API results array, which is used to select the trivia question from the array
+
+		questionIndex = Math.floor(Math.random() * apiResults.length);
+	 	
+
+		// Check to see of the question number has already been selected
+	 	if (questionIndices.indexOf(questionIndex) === -1) {
+
+	 	//If it hasn't been selected, then put the question number into an array to track selected questions and retrieve the question at that index position	
+ 		questionIndices.push(questionIndex);
+ 		currentQuestion = apiResults[questionIndex].question;
+ 		console.log("Current question: " + currentQuestion);
+
+	 	} //end if
+	} // end while
+	
+	// Console log the question indices that have accumulated in the tracking array
+
+	console.log("Question indices: " + questionIndices); 
+	
 				
-
-    // Display the game question and answers
+    // Display the game question
     
  	$("#askQuestion").html(currentQuestion);
 
 
- 	// Select a div to display the correct answer, by generating a random number between 1 and 4
+ 	// Code to display the correct answer in a random position amongst the four available answer slots
 
+	// Select a random div to display the correct answer, by generating a random number between 1 and 4
 
 	correctAnswerSlot = Math.floor((Math.random() * 3) +1);
-	correctAnswer = apiResults[questionIndex].correct_answer;
-	console.log(correctAnswer);
+	console.log("Correct answer slot: " + correctAnswerSlot);
+
+ 	// Retrieve the correct answer from the question object
+
+ 	correctAnswer = apiResults[questionIndex].correct_answer;
+	console.log("Correct answer: " + correctAnswer);
+
+	// Place the correct answer in the random div
+	
 	$("#" + "slot" + correctAnswerSlot).html(correctAnswer);
+
+	// Retrieve the incorrect answers from the question object array
+
+	incorrectAnswers = apiResults[questionIndex].incorrect_answers;
+	console.log("Incorrect answers: " + incorrectAnswers);
 
 	// Place the incorrect answers into the remaining answer slots
 
-	var incorrectAnswers = apiResults[questionIndex].incorrect_answers;
-	console.log(incorrectAnswers);
-
 	var n = 0;
+
+	// Loop through the div id slot numbers
+
 	for (var i = 1; i < 5; i++) {
+
+		// Skipping over the correct answer slot
+
 		if (i != correctAnswerSlot) {
+
+			// Insert the correct answers in the remaining slots
+
 			$("#" + "slot" + i).html(incorrectAnswers[n]);
 			n++;
-		}
 
-	}
+		} // end if
+	} // end for loop
 
+
+	} // end InitGame function
+
+
+	// Function to determine if correct answer is clicked
+
+	function isCorrect () {
+
+	// Determine the slot number clicked on from the id attribute
+
+	var clickedSlot = $(this).attr("id");
+
+	// Strip the initial characters from the id attribute, leaving only slot number. Typecast the string into a number.
+
+	clickedSlot = Number(clickedSlot.slice(4));
+	console.log("Clicked slot: " + clickedSlot);
+	
+	// If the clicked slot contains the correct answer, then display a success message and update the correct and incorrect displayed answer score
+
+	if (clickedSlot === correctAnswerSlot) {
+
+		$("#winlossMessage").text("You got it!");
+		correctScore++;
+		$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
+		$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
+
+		initGame ();
+		
+
+	} else {
+		
+		youLost ();
+	
+	} // end success and failure if-else
 	
 
+	} // end isCorrect function
 
- 	});	
-     
-   
-     	// Set the click event for the answers on the page
 
-		$(".answer").click(isCorrect); 
+	// Function that displays a failure message on wrong answer or timeout and update the correct and incorrect displayed answer score
 
-		// Function to determine if correct answer is clicked
+	function youLost () {
 
-		function isCorrect () {
-
-		// Determine the slot number clicked on from the id attribute
-
-		var clickedSlot = $(this).attr("id");
-
-		// Finally, strip the initial characters from the id attribute, leaving only slot number
-
-		clickedSlot = clickedSlot.slice(4);
-		console.log(clickedSlot);
-		console.log(correctAnswerSlot);
-
-		if (clickedSlot == correctAnswerSlot) {
-
-			$("#winlossMessage").text("You got it!");
-			correctAnswers++;
-			$("#winlossCounter").html("Correct: " + correctAnswers + "&nbsp;&nbsp;Incorrect: " + incorrectAnswers);
-
-		} else {
-			youLost();
-			// $("#winlossMessage").text("Sorry, the answer was : " + correctAnswer);
-			// incorrectAnswers++;
-			// $("#winlossCounter").html("Correct: " + correctAnswers + "&nbsp;&nbsp;Incorrect: " + incorrectAnswers);
+		$("#winlossMessage").text("Sorry, the answer was : " + correctAnswer);
+		wrongScore++;
+		$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
 			
-		}
+		$("#timeClock").data('countdown').update(+(new Date) + 10000).start();
 
-		} // end isCorrect function
+		initGame ();
 
-
-		function youLost () {
-			$("#winlossMessage").text("Sorry, the answer was : " + correctAnswer);
-			incorrectAnswers++;
-			$("#winlossCounter").html("Correct: " + correctAnswers + "&nbsp;&nbsp;Incorrect: " + incorrectAnswers);
-		}
+		} // end youLost function
 
 
-		//  Timer counts down 30 seconds per question
+		//  Creates and initializes a countdown timer. The timer counts down 10 seconds per question.
 
 		$(function() {  
 
@@ -132,16 +198,20 @@ $(document).ready(function(){
             $(this.el).text(this.leadingZeros(data.sec, 2) + " sec");
           },
           onEnd: function() {
+          
+          // When time clock runs down to zero, call the youLost function, which displays the failure message and update the correct and incorrect displayed answer score	
           youLost();
 
           }
         }).on("click", function() {
-          $(this).removeClass('ended').data('countdown').update(+(new Date) + 30000).start();
+        
         });     
       });
 
+ // Set a click event for the answer "buttons"
 
+	$(".answer").click(isCorrect);	 
 
-
+initGame ();
 
 });
