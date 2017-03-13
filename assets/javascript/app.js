@@ -196,11 +196,9 @@ $(document).ready(function(){
 		correctScore++;
 		$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
 
-
 		// Fade the wrong answers back
 
 		$(".fadeWrong").fadeTo(2000, 0.1);
-
 		
 		// We stop the timer when a correct answer is clicked
 
@@ -208,7 +206,7 @@ $(document).ready(function(){
 
 		// Unbind answers to prevent clicks during setTimeout
 
-		$(".answer").unbind("click");
+		$(".answer").unbind("click", isCorrect);
 
 		// We wait three seconds, and then ask the next question and restart the timer
 
@@ -242,7 +240,7 @@ $(document).ready(function(){
 		
 		// Unbind answers to prevent clicks during setTimeout
 
-		$(".answer").unbind("click");
+		$(".answer").unbind("click", isCorrect);
 
 		//We wait three seconds, and then ask the next question and restart the timer
 
@@ -262,11 +260,12 @@ $(document).ready(function(){
 			$("#winlossMessage").text("");
 			$("#gameisOver").text("");
 			$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
+			$(".answer").unbind("click",isCorrect);
+
 			
 			// Wait two seconds, and then restart the timer when first question displays
 			setTimeout(function() {
 				$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
-				$(".answer").bind("click", isCorrect);
 				initGame();
 			}, 2000);
 
