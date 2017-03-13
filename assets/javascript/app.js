@@ -53,7 +53,8 @@ $(document).ready(function(){
 	totalScore = correctScore + wrongScore;
 	if (totalScore === 10) {
 		$("#timeClock").removeClass('ended').data('countdown').stop();
-		$("#winlossMessage").text("Thanks for playing!");
+		$("#winlossMessage").text("Game over!");
+		$(".answer").unbind("click");
 
 	}	
 
@@ -193,20 +194,18 @@ $(document).ready(function(){
 		$(function() {  
 
         $("#timeClock").countdown({
-          date: +(new Date) + 10000,
-          render: function(data) {
-            $(this.el).text(this.leadingZeros(data.sec, 2) + " sec");
-          },
-          onEnd: function() {
-          
-          // When time clock runs down to zero, call the youLost function, which displays the failure message and update the correct and incorrect displayed answer score	
-          youLost();
+	          date: +(new Date) + 10000,
+	          render: function(data) {
+	            $(this.el).text(this.leadingZeros(data.sec, 2) + " sec");
+	          },
+	          onEnd: function() {
+	          
+	          // When time clock runs down to zero, call the youLost function, which displays the failure message and update the correct and incorrect displayed answer score	
+	          youLost();
 
-          }
-        }).on("click", function() {
-        
-        });     
-      });
+	          }
+	          });     
+      	  }); // end of countdown timer function
 
  // Set a click event for the answer "buttons"
 
