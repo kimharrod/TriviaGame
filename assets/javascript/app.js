@@ -64,12 +64,28 @@ $(document).ready(function(){
 	$(".answer").fadeTo(10, 1.0);
 	$(".answer").removeClass("fadeWrong");
 
+	// Variable to hold the player's expertise level (ranking statement)
+	var level = "";
+
 	// Function to check if the game is over, i.e. 10 questions have been answered
 
 	totalScore = correctScore + wrongScore;
 		if (totalScore === 10) {
+			if (correctScore > 8) {
+				level = "Expert";
+			}
+			if (correctScore === 7 || correctScore === 8) {
+				level = "Advanced";
+			}
+			if (correctScore === 5 || correctScore === 6) {
+				level = "Learner";
+			}
+			if (correctScore < 5) {
+				level = "Beginner";
+			}
 			$("#timeClock").removeClass('ended').data('countdown').stop();
 			$("#gameisOver").text("Game over!");
+			$("#gameRank").text("Ranking: " + level);
 			$(".answer").unbind("click");
 			return;
 
@@ -80,6 +96,7 @@ $(document).ready(function(){
 	correctAnswer = "";
 	currentQuestion = "none";
 	$("#winlossMessage").text("");
+	$("#gameRank").text("");
 
 	// Initiates loop to determine if each new questions is unique to that 10-question game session. 	
 
