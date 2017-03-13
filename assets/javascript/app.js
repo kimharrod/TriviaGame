@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	
 
 	// Set variables for the game
 
@@ -13,6 +14,16 @@ $(document).ready(function(){
 	var incorrectAnswers = [];
 	var currentQuestion = "";
 	
+
+	// Set a click event for the answers
+
+	$(".answer").bind("click", isCorrect);
+
+	// Set a click event for the play again button
+
+	$("#playagainbutton").click(playAgain);
+
+
 
 	// The URL to make the necessary API call
 
@@ -161,17 +172,18 @@ $(document).ready(function(){
 		$("#winlossMessage").text("You got it!");
 		correctScore++;
 		$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
+
 		
 		// We stop the timer when a correct answer is clicked
 
 		$("#timeClock").removeClass('ended').data('countdown').stop();
 
-		// We wait four seconds, and then ask the next question and restart the timer
+		// We wait three seconds, and then ask the next question and restart the timer
 
 		setTimeout(function() {
 			$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
 			initGame ();
-		}, 4000);		
+		}, 3000);		
 
 	} else {
 		
@@ -196,18 +208,40 @@ $(document).ready(function(){
 		$("#timeClock").removeClass('ended').data('countdown').stop();
 		
 
-		//We wait four seconds, and then ask the next question and restart the timer
+		//We wait three seconds, and then ask the next question and restart the timer
 
 		setTimeout(function() {
 			$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
 			initGame ();
-		}, 4000);
+		}, 3000);
 
 		} // end youLost function
 
 
+		// Function to fade out wrong answers
+
+		// function fadeWrong () {
+		// 	$("#" + "slot" + "n").fadeTo(2000, 0.1);
+
+		// }
+
+		// Function to play again by clicking play again button
+
+		function playAgain () {
+			correctScore = 0;
+			wrongScore = 0;
+			$("#winlossMessage").text("");
+			$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
+			$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
+			$(".answer").bind("click", isCorrect);
+			initGame();
+
+		} // end play again function
+
+
 		//  Creates and initializes a countdown timer. The timer counts down 10 seconds per question.
 
+		setTimeout(function() {
 		$(function() {  
 
         $("#timeClock").countdown({
@@ -223,12 +257,11 @@ $(document).ready(function(){
 	          }
 	          });     
       	  }); // end of countdown timer function
-		
 
- // Set a click event for the answer "buttons"
-
-	$(".answer").click(isCorrect);	 
+		}, 2000);
+	 
 
 initGame ();
+
 
 });
