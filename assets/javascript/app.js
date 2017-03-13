@@ -15,10 +15,6 @@ $(document).ready(function(){
 	var currentQuestion = "";
 	
 
-	// Set a click event for the answers
-
-	$(".answer").bind("click", isCorrect);
-
 	// Set a click event for the play again button
 
 	$("#playagainbutton").click(playAgain);
@@ -59,6 +55,15 @@ $(document).ready(function(){
 
 	function initGame () {
 	
+	// Set a click event for the answers
+
+	$(".answer").bind("click", isCorrect);
+
+	// Remove wrong answer fading and remove the fade Wrong class from the answer slots
+
+	$(".answer").fadeTo(10, 1.0);
+	$(".answer").removeClass("fadeWrong");
+
 	// Function to check if the game is over, i.e. 10 questions have been answered
 
 	totalScore = correctScore + wrongScore;
@@ -143,6 +148,7 @@ $(document).ready(function(){
 			// Insert the correct answers in the remaining slots
 
 			$("#" + "slot" + i).html(incorrectAnswers[n]);
+			$("#" + "slot" + i).addClass("fadeWrong");
 			n++;
 
 		} // end if
@@ -173,15 +179,25 @@ $(document).ready(function(){
 		correctScore++;
 		$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
 
+
+		// Fade the wrong answers back
+
+		$(".fadeWrong").fadeTo(2000, 0.1);
+
 		
 		// We stop the timer when a correct answer is clicked
 
 		$("#timeClock").removeClass('ended').data('countdown').stop();
 
+		// Unbind answers to prevent clicks during setTimeout
+
+		$(".answer").unbind("click");
+
 		// We wait three seconds, and then ask the next question and restart the timer
 
 		setTimeout(function() {
 			$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
+			$(".fadeWrong").fadeTo(10, 1.0);
 			initGame ();
 		}, 3000);		
 
@@ -207,6 +223,9 @@ $(document).ready(function(){
 
 		$("#timeClock").removeClass('ended').data('countdown').stop();
 		
+		// Unbind answers to prevent clicks during setTimeout
+
+		$(".answer").unbind("click");
 
 		//We wait three seconds, and then ask the next question and restart the timer
 
@@ -217,13 +236,6 @@ $(document).ready(function(){
 
 		} // end youLost function
 
-
-		// Function to fade out wrong answers
-
-		// function fadeWrong () {
-		// 	$("#" + "slot" + "n").fadeTo(2000, 0.1);
-
-		// }
 
 		// Function to play again by clicking play again button
 
