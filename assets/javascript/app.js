@@ -231,10 +231,15 @@ $(document).ready(function(){
 			correctScore = 0;
 			wrongScore = 0;
 			$("#winlossMessage").text("");
+			$("#gameisOver").text("");
 			$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
-			$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
-			$(".answer").bind("click", isCorrect);
-			initGame();
+			
+			// Wait two seconds, and then restart the timer when first question displays
+			setTimeout(function() {
+				$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
+				$(".answer").bind("click", isCorrect);
+				initGame();
+			}, 2000);
 
 		} // end play again function
 
