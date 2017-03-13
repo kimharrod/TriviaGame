@@ -47,16 +47,17 @@ $(document).ready(function(){
     // Function to initialize variables and choose a new question
 
 	function initGame () {
-
-	// Check to see if 10 questions have been answered and the game is over
 	
-	totalScore = correctScore + wrongScore;
-	if (totalScore === 10) {
-		$("#timeClock").removeClass('ended').data('countdown').stop();
-		$("#gameisOver").text("Game over!");
-		$(".answer").unbind("click");
+	// Function to check if the game is over, i.e. 10 questions have been answered
 
-	}	
+	totalScore = correctScore + wrongScore;
+		if (totalScore === 10) {
+			$("#timeClock").removeClass('ended').data('countdown').stop();
+			$("#gameisOver").text("Game over!");
+			$(".answer").unbind("click");
+			return;
+
+		} // end of if
 
 	questionIndex = 0;
 	correctAnswerSlot = "";
@@ -161,11 +162,11 @@ $(document).ready(function(){
 		correctScore++;
 		$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
 		
-		//We stop the timer when a correct answer is clicked
+		// We stop the timer when a correct answer is clicked
 
 		$("#timeClock").removeClass('ended').data('countdown').stop();
-		
-		//We wait four seconds, and then ask the next question and restart the timer
+
+		// We wait four seconds, and then ask the next question and restart the timer
 
 		setTimeout(function() {
 			$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
@@ -194,6 +195,7 @@ $(document).ready(function(){
 
 		$("#timeClock").removeClass('ended').data('countdown').stop();
 		
+
 		//We wait four seconds, and then ask the next question and restart the timer
 
 		setTimeout(function() {
@@ -221,6 +223,7 @@ $(document).ready(function(){
 	          }
 	          });     
       	  }); // end of countdown timer function
+		
 
  // Set a click event for the answer "buttons"
 
