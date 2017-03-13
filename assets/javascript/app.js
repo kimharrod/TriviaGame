@@ -53,7 +53,7 @@ $(document).ready(function(){
 	totalScore = correctScore + wrongScore;
 	if (totalScore === 10) {
 		$("#timeClock").removeClass('ended').data('countdown').stop();
-		$("#winlossMessage").text("Game over!");
+		$("#gameisOver").text("Game over!");
 		$(".answer").unbind("click");
 
 	}	
@@ -62,6 +62,7 @@ $(document).ready(function(){
 	correctAnswerSlot = "";
 	correctAnswer = "";
 	currentQuestion = "none";
+	$("#winlossMessage").text("");
 
 	// Initiates loop to determine if each new questions is unique to that 10-question game session. 	
 
@@ -159,10 +160,17 @@ $(document).ready(function(){
 		$("#winlossMessage").text("You got it!");
 		correctScore++;
 		$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
-		$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
-
-		initGame ();
 		
+		//We stop the timer when a correct answer is clicked
+
+		$("#timeClock").removeClass('ended').data('countdown').stop();
+		
+		//We wait four seconds, and then ask the next question and restart the timer
+
+		setTimeout(function() {
+			$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
+			initGame ();
+		}, 4000);		
 
 	} else {
 		
@@ -182,9 +190,16 @@ $(document).ready(function(){
 		wrongScore++;
 		$("#winlossCounter").html("Correct: " + correctScore + "&nbsp;&nbsp;Incorrect: " + wrongScore);
 			
-		$("#timeClock").data('countdown').update(+(new Date) + 10000).start();
+		//We stop the timer when an incorrect answer is clicked
 
-		initGame ();
+		$("#timeClock").removeClass('ended').data('countdown').stop();
+		
+		//We wait four seconds, and then ask the next question and restart the timer
+
+		setTimeout(function() {
+			$("#timeClock").removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
+			initGame ();
+		}, 4000);
 
 		} // end youLost function
 
